@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import os
 import subprocess
@@ -44,7 +43,6 @@ def process_video_advanced(input_path: str, output_path: str) -> tuple[bool, str
         
         if result.returncode != 0:
             err_msg = result.stderr.strip()
-            # শেষের ৩০০ ক্যারেক্টার মূল এরর বোঝার জন্য যথেষ্ট
             short_err = err_msg[-300:] if len(err_msg) > 300 else err_msg
             logger.error(f"FFmpeg failed: {short_err}")
             return False, f"FFmpeg Error Code {result.returncode}:\n{short_err}"
@@ -191,4 +189,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-        
