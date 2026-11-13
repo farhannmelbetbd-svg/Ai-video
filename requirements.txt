@@ -1,6 +1,1 @@
-python-telegram-bot==22.8
-requests
-gTTS
-Pillow
-moviepy==1.0.3
-imageio-ffmpeg
+python-telegram-bot==21.10
