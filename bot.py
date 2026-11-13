@@ -47,7 +47,6 @@ def get_total_users() -> int:
 def get_user_data(user_id: str):
     db = load_db()
     if user_id not in db:
-        # নতুন ইউজার: ১০ ক্রেডিট বোনাস এবং রেফার্ড বাই নান
         db[user_id] = {"credits": 10, "referred_by": None, "referred_count": 0}
         save_db(db)
     return db[user_id]
@@ -93,7 +92,6 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     
     u_data = get_user_data(user_id_str)
     
-    # রেফারেল হ্যান্ডলিং
     args = context.args
     if args and args[0].startswith("ref_"):
         referrer_id = args[0].split("_")[1]
@@ -101,7 +99,6 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             db = load_db()
             if referrer_id in db:
                 u_data["referred_by"] = referrer_id
-                # রেফারারকে ২০ ক্রেডিট বোনাস দেওয়া হলো
                 db[referrer_id]["credits"] += 20
                 db[referrer_id]["referred_count"] = db[referrer_id].get("referred_count", 0) + 1
                 save_db(db)
@@ -119,7 +116,6 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     total_users = get_total_users()
     
     bot_username = "Fast1panelbot"
-    ref_link = f"https://t.me/{bot_username}?start=ref_{user_id_str}"
     
     keyboard = [
         [InlineKeyboardButton("🎁 প্রতি রেফারে ২০ ক্রেডিট আয় করুন!", callback_data="ref_menu")],
@@ -358,6 +354,6 @@ def main() -> None:
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
-if __name__ ==---
-__main__()
-    
+if __name__ == "__main__":
+    main()
+                      
