@@ -35,13 +35,16 @@ def process_video_advanced(input_path: str, output_path: str) -> bool:
             output_path,
             "-y"
         ]
+        logger.info(f"Running command: {' '.join(cmd)}")
         result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        
         if result.returncode != 0:
-            logger.error(f"FFmpeg error: {result.stderr}")
+            logger.error(f"FFmpeg failed with return code {result.returncode}")
+            logger.error(f"FFmpeg stderr: {result.stderr}")
             return False
         return True
     except Exception as e:
-        logger.exception(f"Advanced video processing failed: {e}")
+        logger.exception(f"Advanced video processing failed with exception: {e}")
         return False
 
 
@@ -80,7 +83,7 @@ async def handle_video(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         success = await asyncio.to_thread(process_video_advanced, input_file, output_file)
 
         if not success or not os.path.exists(output_file):
-            await status_msg.edit_text("❌ ভিডিও প্রসেস করতে গিয়ে সমস্যা হয়েছে। আবার চেষ্টা করুন।")
+            await status_msg.edit_text("❌ ভিডিও প্রসেস করতে গিয়ে সমস্যা হয়েছে। রেলওয়ে লগ (Logs) চেক করুন।")
             return
 
         await status_msg.edit_text("📤 এডিট সম্পন্ন! ভিডিও আপলোড করা হচ্ছে...")
